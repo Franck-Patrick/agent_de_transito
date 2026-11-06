@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agente de Trânsito G7</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='9' y='1' width='14' height='30' rx='4' fill='%231d2330'/%3E%3Ccircle cx='16' cy='8' r='3.5' fill='%23dc2626'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23eab308'/%3E%3Ccircle cx='16' cy='24' r='3.5' fill='%2316a34a'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Agente Inteligente de Controle de Trânsito</h1>
+    <span id="status" class="status off">desconectado</span>
+  </header>
+
+  <main>
+    <section class="col-left">
+      <div class="card">
+        <h2><span class="tag e">E</span> Ambiente: o cruzamento</h2>
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <div class="controls">
+          <button id="btn-pause">Pausar</button>
+          <button id="btn-step" disabled>Avançar 1 tick</button>
+          <label>Ritmo
+            <input id="speed" type="range" min="0.3" max="3" step="0.1" value="1.5">
+            <span id="speed-value"></span>
+          </label>
+          <button id="btn-reset">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Cartas surpresa</h2>
+        <div class="cards">
+          <div>
+            <strong>Ambulância</strong>
+            <div class="row" data-cmd="emergency">
+              <button data-dir="N">N</button><button data-dir="S">S</button>
+              <button data-dir="E">E</button><button data-dir="W">W</button>
+            </div>
+          </div>
+          <div>
+            <strong>Sensor quebrado</strong> <small>(clique liga/desliga)</small>
+            <div class="row toggle" data-cmd="sensor">
+              <button data-dir="N">N</button><button data-dir="S">S</button>
+              <button data-dir="E">E</button><button data-dir="W">W</button>
+            </div>
+          </div>
+          <div>
+            <strong>Pico de tráfego</strong> <small>(clique liga/desliga)</small>
+            <div class="row toggle" data-cmd="surge">
+              <button data-dir="N">N</button><button data-dir="S">S</button>
+              <button data-dir="E">E</button><button data-dir="W">W</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="col-right">
+      <div class="card">
+        <h2><span class="tag s">S</span> Sensores: o que o agente percebe</h2>
+        <table id="percept">
+          <thead><tr><th>Via</th><th>Fila</th><th>Maior espera</th><th>Sirene</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="muted" id="signal-line"></p>
+      </div>
+
+      <div class="card decision">
+        <h2><span class="tag ag">Agente</span> Raciocínio deste tick</h2>
+        <div class="decision-head">
+          <span id="action" class="badge">-</span>
+          <code id="rule">-</code>
+        </div>
+        <p id="reason">Aguardando a primeira decisão...</p>
+        <table id="metrics"><tbody></tbody></table>
+      </div>
+
+      <div class="card">
+        <h2><span class="tag a">A</span> Atuador: histórico de trocas e eventos</h2>
+        <ol id="log"></ol>
+      </div>
+
+      <div class="card">
+        <h2><span class="tag p">P</span> Desempenho</h2>
+        <table id="perf"><tbody></tbody></table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
